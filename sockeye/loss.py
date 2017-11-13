@@ -156,7 +156,7 @@ class CrossEntropyMetric(EvalMetric):
                                    on_value=1.0 - self.loss_config.label_smoothing,
                                    off_value=self.loss_config.label_smoothing /
                                              (self.loss_config.vocab_size - 1.0))
-        label_dist = mx.nd.where(ignore, label_dist, mx.nd.zeros_like(label_dist))
+        label_dist = mx.nd.where(1-ignore, label_dist, mx.nd.zeros_like(label_dist))
         loss = label_dist * (- mx.nd.log(pred + 1e-8)) # pylint: disable=invalid-unary-operand-type
         return loss
 
